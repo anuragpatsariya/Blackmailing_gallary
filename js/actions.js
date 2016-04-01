@@ -68,6 +68,7 @@ function loginSuccess(){
     $("#myInput").removeClass("sr-only");
     $("#myLogout").removeClass("sr-only");
     $("#login").addClass("sr-only");
+    $("#register").addClass("sr-only");
     setTimeout(function(){$('#myModalLogin').modal('hide')},2000);
     $.ajax({
         url: "http://localhost:3000/imagedata/?uploadedBy="+user_details.username+"&deleted=false",
