@@ -60,7 +60,7 @@
       "img_path": "img/large/userphoto-1459447133744.jpeg",
       "img_heading": "new1",
       "img_details": "new1",
-      "deleted": false,
+      "deleted": true,
       "uploadedBy": "user1",
       "id": 8
     },
@@ -76,7 +76,7 @@
       "img_path": "img/large/userphoto-1459455531605.jpeg",
       "img_heading": "test 3",
       "img_details": "test 3",
-      "deleted": false,
+      "deleted": true,
       "uploadedBy": "user1",
       "id": 10
     },

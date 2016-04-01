@@ -25,6 +25,9 @@
             <nav>
                 <!--<a href="http://tympanus.net/codrops/category/blueprints/" class="bp-icon bp-icon-archive" data-info="upload photo"><span>Upload Photo</span></a> 
                 <Button type="Button">Upload A New Photo</Button> -->
+                <button type="button" id="register" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalRegister">
+                    Register
+                </button>
                 <button type="button" id="login" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalLogin">
                     Login
                 </button>
@@ -50,6 +53,37 @@
             <!-- // slideshow -->
         </div>
         <!-- // grid-gallery -->
+    </div>
+    <!--REGISTER A NEW USER-->
+    
+    <div id="myModalRegister" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Register a New User</h4>
+                </div>
+                <div class="modal-body">
+                    <!--<input type="file" name="userphoto" id="imgfile" />-->
+                    <div><input type="text" name="reg_uname" id="reg_uname" placeholder="Username" /></div>
+                    <div><input type="password" name="newpwd" id="newpwd" placeholder="Password" /></div>
+                    <div><input type="password" name="confirm_newrpwd" id="confirm_newrpwd" placeholder="Confirm Password" /></div>
+                    <input type="button" value="register" name="Register" onclick="register()" id="register" />
+                    <!--<label id="up" class="sr-only">File uploaded successfully.</label>-->
+                </div>
+                <div class="modal-footer">
+                    <label id="loginSuccess" class="sr-only">You logged in successfully.</label>
+                    <label id="loginFailure" class="sr-only">Incorrect username or password!! Try again.</label>
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="uploadRecord()" id="uploadrecord">Upload Record</button>-->
+                </div>
+                <!--<div class="modal-footer">
+                    <label id="upr" class="sr-only">Record uploaded successfully.</label>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="uploadRecord()" id="uploadrecord">Upload Record</button>
+                </div>-->
+            </div>
+        </div>
     </div>
     
     <!--USER LOGIN-->

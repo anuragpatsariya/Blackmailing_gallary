@@ -27,6 +27,21 @@ $(document).ready(function() {
 
 var user_details;
 
+function register(){
+    var new_username = $("#reg_uname").val();
+    var newpwd = $("#newpwd").val();
+    var confirm_newpwd = $("#confirm_newrpwd").val();
+    if(newpwd == confirm_newpwd){
+        window.alert("Password Matches.");
+        
+    } else{
+        window.alert("Password did not match. Try again!!!");
+    }
+    
+}
+
+
+
 function remove_block(){
         //$(this).parent().parent().parent(".grid_block").remove();
         var record_id = $(this).parent().parent().parent(".grid_block")[0].dataset.id;
