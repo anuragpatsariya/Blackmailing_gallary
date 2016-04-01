@@ -64,11 +64,13 @@ function remove_block(){
 
 
 function loginSuccess(){
-    $("#loginSuccess").removeClass("sr-only");
+    $("#loginSuccess").toggleClass("sr-only");
     $("#myInput").removeClass("sr-only");
     $("#myLogout").removeClass("sr-only");
     $("#login").addClass("sr-only");
     $("#register").addClass("sr-only");
+    $("#uname")[0].value = "";
+    $("#pwd")[0].value = "";
     setTimeout(function(){$('#myModalLogin').modal('hide')},2000);
     $.ajax({
         url: "http://localhost:3000/imagedata/?uploadedBy="+user_details.username+"&deleted=false",
@@ -91,6 +93,8 @@ function loginSuccess(){
 
 function loginFailure(){
     $("#loginFailure").removeClass("sr-only");
+    $("#uname")[0].value = "";
+    $("#pwd")[0].value = "";
     //$('#myModalLogin').modal('hide');
     setTimeout(function(){$('#myModalLogin').modal('hide')},2000);
 }
@@ -193,7 +197,8 @@ function uploadRecord() {
         data: { "img_path": file_path_name, "img_heading": imgheading, "img_details": imgdetails, "deleted":false, "uploadedBy":user_details.username },
         dataType: "JSON",
         success: function(data) {
-            var text = "<li  data-id=\""+item.id+"\" class=\"grid_block\"><figure> <img src=\"" + file_path_name + "\" alt=\"img0" + "" + "\" height=\"150\" width=\"50\"/><figcaption> <h3>" + imgheading + "</h3><p>" + imgdetails + "</p></figcaption> </figure><div class=\"container\"><a class = \"del_image\"><span class=\"glyphicon glyphicon-remove\"></span></a></li>";
+
+            var text = "<li  data-id=\""+data.id+"\" class=\"grid_block\"><figure> <img src=\"" + data.img_path + "\" alt=\"img0" + "" + "\" height=\"150\" width=\"50\"/><figcaption> <h3>" + data.img_heading + "</h3><p>" + data.img_details + "</p></figcaption> </figure><div class=\"container\"><a class = \"del_image\"><span class=\"glyphicon glyphicon-remove\"></span></a></li>";
             $("#grid_id")[0].innerHTML += text;
             $("#imgfile")[0].value = null;
             $("#imgheading")[0].value = "";
