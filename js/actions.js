@@ -51,6 +51,10 @@ function register() {
                         data: { "username": new_username, "pwd": newpwd },
                         success: function(data) {
                             window.alert("User registered successfully");
+                            setTimeout(function() { $('#myModalRegister').modal('hide') }, 1500);
+                            $("#reg_uname")[0].value = "";
+                            $("#newpwd")[0].value = "";
+                            $("#confirm_newrpwd")[0].value = "";
                         },
                         Error: function(xhr, status, error) {
                             window.alert("Error: " + xhr.status + status + error);
@@ -98,7 +102,7 @@ function loginSuccess() {
     $("#register").addClass("sr-only");
     $("#uname")[0].value = "";
     $("#pwd")[0].value = "";
-    setTimeout(function() { $('#myModalLogin').modal('hide') }, 2000);
+    setTimeout(function() { $('#myModalLogin').modal('hide') }, 1500);
     $.ajax({
         url: "http://localhost:3000/imagedata/?uploadedBy=" + user_details.username + "&deleted=false",
         type: "GET",
@@ -123,7 +127,7 @@ function loginFailure() {
     $("#uname")[0].value = "";
     $("#pwd")[0].value = "";
     //$('#myModalLogin').modal('hide');
-    setTimeout(function() { $('#myModalLogin').modal('hide') }, 2000);
+    setTimeout(function() { $('#myModalLogin').modal('hide') }, 1500);
 }
 
 function login() {
