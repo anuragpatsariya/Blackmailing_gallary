@@ -143,6 +143,7 @@ function loginSuccess() {
 
 function loginFailure() {
     $("#loginFailure").removeClass("sr-only");
+    setTimeout(function() { $("#loginFailure").toggleClass("sr-only") }, 1000);
     $("#uname")[0].value = "";
     $("#pwd")[0].value = "";
     //$('#myModalLogin').modal('hide');
