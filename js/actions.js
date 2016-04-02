@@ -31,6 +31,20 @@ function register() {
     var new_username = $("#reg_uname").val();
     var newpwd = $("#newpwd").val();
     var confirm_newpwd = $("#confirm_newrpwd").val();
+    if(new_username.length == 0){
+        //window.alert("Username cannot be blank.");
+        $("#regUserBlank").toggleClass("sr-only");
+        //setTimeout(function() { $('#regUserBlank').modal('hide') }, 2000);
+        setTimeout(function() { $("#regUserBlank").toggleClass("sr-only") }, 1000);
+        
+    }
+    else if(newpwd.length == 0){
+        //window.alert("Password field cannot be blank.");
+        $("#regPwdBlank").toggleClass("sr-only");
+        setTimeout(function() { $("#regPwdBlank").toggleClass("sr-only") }, 1000);
+    }
+    
+    else{
     $.ajax({
         type: "GET",
         dataType: "JSON",
@@ -42,8 +56,9 @@ function register() {
             } else {
                 //window.alert("User don't exist.");
                 if (newpwd != confirm_newpwd) {
-                    window.alert("Passwords did not match.");
+                    //window.alert("Passwords did not match.");
                     $("#regFailurePwd").toggleClass("sr-only");
+                    setTimeout(function() { $("#regFailurePwd").toggleClass("sr-only") }, 1000);
                 }
                 else {
                     $.ajax({
@@ -72,7 +87,7 @@ function register() {
             window.alert("Error: " + xhr.status + status + error);
         }
     });
-
+    }
 }
 
 
