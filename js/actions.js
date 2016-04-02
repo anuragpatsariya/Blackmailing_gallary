@@ -37,11 +37,13 @@ function register() {
         url: "http://localhost:3000/userdata/?username=" + new_username,
         success: function(data) {
             if (data.length != 0) {
-                window.alert("User Exists.");
+                //window.alert("User Exists.");
+                $("#regFailureUserExist").toggleClass("sr-only");
             } else {
                 //window.alert("User don't exist.");
                 if (newpwd != confirm_newpwd) {
                     window.alert("Passwords did not match.");
+                    $("#regFailurePwd").toggleClass("sr-only");
                 }
                 else {
                     $.ajax({
@@ -50,11 +52,13 @@ function register() {
                         url: "http://localhost:3000/userdata/",
                         data: { "username": new_username, "pwd": newpwd },
                         success: function(data) {
-                            window.alert("User registered successfully");
-                            setTimeout(function() { $('#myModalRegister').modal('hide') }, 1500);
+                            //window.alert("User registered successfully");
+                            $("#regSuccess").toggleClass("sr-only");
+                            setTimeout(function() { $('#myModalRegister').modal('hide') }, 2000);
                             $("#reg_uname")[0].value = "";
                             $("#newpwd")[0].value = "";
                             $("#confirm_newrpwd")[0].value = "";
+                            setTimeout(function() { $("#regSuccess").toggleClass("sr-only") }, 1500);
                         },
                         Error: function(xhr, status, error) {
                             window.alert("Error: " + xhr.status + status + error);
@@ -102,7 +106,7 @@ function loginSuccess() {
     $("#register").addClass("sr-only");
     $("#uname")[0].value = "";
     $("#pwd")[0].value = "";
-    setTimeout(function() { $('#myModalLogin').modal('hide') }, 1500);
+    setTimeout(function() { $('#myModalLogin').modal('hide') }, 2000);
     $.ajax({
         url: "http://localhost:3000/imagedata/?uploadedBy=" + user_details.username + "&deleted=false",
         type: "GET",
@@ -127,7 +131,7 @@ function loginFailure() {
     $("#uname")[0].value = "";
     $("#pwd")[0].value = "";
     //$('#myModalLogin').modal('hide');
-    setTimeout(function() { $('#myModalLogin').modal('hide') }, 1500);
+    setTimeout(function() { $('#myModalLogin').modal('hide') }, 2000);
 }
 
 function login() {
