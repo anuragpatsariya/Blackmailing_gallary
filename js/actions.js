@@ -22,48 +22,75 @@ $(document).ready(function() {
             window.alert("Error: " + xhr.status + status + error);
         }
     });
-    $("#grid_id").on("click","li.grid_block div.container a.del_image span.glyphicon-remove", remove_block);
+    $("#grid_id").on("click", "li.grid_block div.container a.del_image span.glyphicon-remove", remove_block);
 });
 
 var user_details;
 
-function register(){
+function register() {
     var new_username = $("#reg_uname").val();
     var newpwd = $("#newpwd").val();
     var confirm_newpwd = $("#confirm_newrpwd").val();
-    if(newpwd == confirm_newpwd){
-        window.alert("Password Matches.");
-        
-    } else{
-        window.alert("Password did not match. Try again!!!");
-    }
-    
+    $.ajax({
+        type: "GET",
+        dataType: "JSON",
+        url: "http://localhost:3000/userdata/?username=" + new_username,
+        success: function(data) {
+            if (data.length != 0) {
+                window.alert("User Exists.");
+            } else {
+                //window.alert("User don't exist.");
+                if (newpwd != confirm_newpwd) {
+                    window.alert("Passwords did not match.");
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "JSON",
+                        url: "http://localhost:3000/userdata/",
+                        data: { "username": new_username, "pwd": newpwd },
+                        success: function(data) {
+                            window.alert("User registered successfully");
+                        },
+                        Error: function(xhr, status, error) {
+                            window.alert("Error: " + xhr.status + status + error);
+                            window.alert("Registration failed.");
+                        }
+                    });
+                }
+            }
+        },
+        Error: function(xhr, status, error) {
+            window.alert("Error: " + xhr.status + status + error);
+        }
+    });
+
 }
 
 
 
-function remove_block(){
-        //$(this).parent().parent().parent(".grid_block").remove();
-        var record_id = $(this).parent().parent().parent(".grid_block")[0].dataset.id;
-        $.ajax({
-            type: "PATCH",
-            dataType: "JSON",
-            url: "http://localhost:3000/imagedata/"+record_id,
-            data:{"deleted":true},
-            success: function(data){
-                window.alert("record deleted.");
-            },
-            Error: function(xhr, status, error) {
+function remove_block() {
+    //$(this).parent().parent().parent(".grid_block").remove();
+    var record_id = $(this).parent().parent().parent(".grid_block")[0].dataset.id;
+    $.ajax({
+        type: "PATCH",
+        dataType: "JSON",
+        url: "http://localhost:3000/imagedata/" + record_id,
+        data: { "deleted": true },
+        success: function(data) {
+            window.alert("record deleted.");
+        },
+        Error: function(xhr, status, error) {
             window.alert("Error: " + xhr.status + status + error);
         }
-            
-        });
-        $(this).parent().parent().parent(".grid_block").remove();
-    }
+
+    });
+    $(this).parent().parent().parent(".grid_block").remove();
+}
 
 
 
-function loginSuccess(){
+function loginSuccess() {
     $("#loginSuccess").toggleClass("sr-only");
     $("#myInput").removeClass("sr-only");
     $("#myLogout").removeClass("sr-only");
@@ -71,17 +98,17 @@ function loginSuccess(){
     $("#register").addClass("sr-only");
     $("#uname")[0].value = "";
     $("#pwd")[0].value = "";
-    setTimeout(function(){$('#myModalLogin').modal('hide')},2000);
+    setTimeout(function() { $('#myModalLogin').modal('hide') }, 2000);
     $.ajax({
-        url: "http://localhost:3000/imagedata/?uploadedBy="+user_details.username+"&deleted=false",
+        url: "http://localhost:3000/imagedata/?uploadedBy=" + user_details.username + "&deleted=false",
         type: "GET",
         dataType: "json",
         success: function(data) {
             $("#grid_id")[0].innerHTML = "";
             $.each(data, function(i, item) {
                 //alert(item);
-                
-                var v = "<li data-id=\""+item.id+"\" class=\"grid_block\"><figure> <img src=\"" + item.img_path + "\" alt=\"img0" + item.id + "\" height=\"150\" width=\"50\"/><figcaption> <h3>" + item.img_heading + "</h3><p>" + item.img_details + "</p></figcaption> </figure><div class=\"container\"><a class = \"del_image\"><span class=\"glyphicon glyphicon-remove\"></span></a></div></li>";
+
+                var v = "<li data-id=\"" + item.id + "\" class=\"grid_block\"><figure> <img src=\"" + item.img_path + "\" alt=\"img0" + item.id + "\" height=\"150\" width=\"50\"/><figcaption> <h3>" + item.img_heading + "</h3><p>" + item.img_details + "</p></figcaption> </figure><div class=\"container\"><a class = \"del_image\"><span class=\"glyphicon glyphicon-remove\"></span></a></div></li>";
                 $("#grid_id")[0].innerHTML += v;
             });
         },
@@ -91,25 +118,25 @@ function loginSuccess(){
     });
 }
 
-function loginFailure(){
+function loginFailure() {
     $("#loginFailure").removeClass("sr-only");
     $("#uname")[0].value = "";
     $("#pwd")[0].value = "";
     //$('#myModalLogin').modal('hide');
-    setTimeout(function(){$('#myModalLogin').modal('hide')},2000);
+    setTimeout(function() { $('#myModalLogin').modal('hide') }, 2000);
 }
 
-function login(){
+function login() {
     var uname = $("#uname").val();
     var pwd = $("#pwd").val();
-    
+
     $.ajax({
-        url: "http://localhost:3000/userdata/?username="+uname+"&pwd="+pwd,
+        url: "http://localhost:3000/userdata/?username=" + uname + "&pwd=" + pwd,
         type: "GET",
         dataType: "json",
-        success:function(data) {
-            
-            if(data.length === 1){
+        success: function(data) {
+
+            if (data.length === 1) {
                 console.log("Successful login.");
                 user_details = data[0];
                 loginSuccess();
@@ -126,7 +153,7 @@ function login(){
     });
 }
 
-function logout(){
+function logout() {
     user_details = null;
     $("#loginSuccess").toggleClass("sr-only");
     $("#login").removeClass("sr-only");
@@ -141,7 +168,7 @@ function logout(){
         success: function(data) {
             $.each(data, function(i, item) {
                 //alert(item);
-                var v = "<li  data-id=\""+item.id+"\" class=\"grid_block\"><figure> <img src=\"" + item.img_path + "\" alt=\"img0" + item.id + "\" height=\"150\" width=\"50\"/><figcaption> <h3>" + item.img_heading + "</h3><p>" + item.img_details + "</p></figcaption> </figure></li>";
+                var v = "<li  data-id=\"" + item.id + "\" class=\"grid_block\"><figure> <img src=\"" + item.img_path + "\" alt=\"img0" + item.id + "\" height=\"150\" width=\"50\"/><figcaption> <h3>" + item.img_heading + "</h3><p>" + item.img_details + "</p></figcaption> </figure></li>";
                 $("#grid_id")[0].innerHTML += v;
             });
         },
@@ -149,7 +176,7 @@ function logout(){
             window.alert("Error: " + xhr.status + status + error);
         }
     });
-    
+
 }
 
 
@@ -196,11 +223,11 @@ function uploadRecord() {
     $.ajax({
         url: "http://localhost:3000/imagedata",
         type: "POST",
-        data: { "img_path": file_path_name, "img_heading": imgheading, "img_details": imgdetails, "deleted":false, "uploadedBy":user_details.username },
+        data: { "img_path": file_path_name, "img_heading": imgheading, "img_details": imgdetails, "deleted": false, "uploadedBy": user_details.username },
         dataType: "JSON",
         success: function(data) {
 
-            var text = "<li  data-id=\""+data.id+"\" class=\"grid_block\"><figure> <img src=\"" + data.img_path + "\" alt=\"img0" + "" + "\" height=\"150\" width=\"50\"/><figcaption> <h3>" + data.img_heading + "</h3><p>" + data.img_details + "</p></figcaption> </figure><div class=\"container\"><a class = \"del_image\"><span class=\"glyphicon glyphicon-remove\"></span></a></li>";
+            var text = "<li  data-id=\"" + data.id + "\" class=\"grid_block\"><figure> <img src=\"" + data.img_path + "\" alt=\"img0" + "" + "\" height=\"150\" width=\"50\"/><figcaption> <h3>" + data.img_heading + "</h3><p>" + data.img_details + "</p></figcaption> </figure><div class=\"container\"><a class = \"del_image\"><span class=\"glyphicon glyphicon-remove\"></span></a></li>";
             $("#grid_id")[0].innerHTML += text;
             $("#imgfile")[0].value = null;
             $("#imgheading")[0].value = "";
@@ -208,8 +235,8 @@ function uploadRecord() {
             $("#up").addClass("sr-only");
             $("#upr").removeClass("sr-only");
             $("#submit")[0].disabled = false;
-            new CBPGridGallery( document.getElementById( 'grid-gallery' ) );
-            
+            new CBPGridGallery(document.getElementById('grid-gallery'));
+
         },
         error: function(xhr, status, error) {
             window.alert("Error: " + xhr.status + status + error);
