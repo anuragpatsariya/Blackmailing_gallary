@@ -128,7 +128,9 @@ function login(){
 
 function logout(){
     user_details = null;
+    $("#loginSuccess").toggleClass("sr-only");
     $("#login").removeClass("sr-only");
+    $("#register").removeClass("sr-only");
     $("#myInput").addClass("sr-only");
     $("#myLogout").addClass("sr-only");
     $("#grid_id")[0].innerHTML = "";
