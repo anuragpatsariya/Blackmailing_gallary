@@ -145,6 +145,8 @@ function remove_block() {
 
 
 function loginSuccess() {
+    var user_name = user_details.username;
+    BootstrapDialog.alert('Welcome Back!! '+ user_name);
     $("#loginSuccess").toggleClass("sr-only");
     $("#myInput").removeClass("sr-only");
     $("#myLogout").removeClass("sr-only");
@@ -244,6 +246,9 @@ function uploadimg() {
     var data = new FormData();
     //console.log(data.dataType);
     //console.log(data.type);
+    if($("#imgfile")[0].files == null){
+        window.alert("Choose an image first.");
+    }else {
     $.each($('#imgfile')[0].files, function(i, file) {
 
         data.append("userphoto", file);
@@ -271,7 +276,7 @@ function uploadimg() {
         }
     });
 }
-
+}
 function uploadRecord() {
     //$("#uploadrecord").disabled=true;
     console.log(file_path_name, imgheading, imgdetails);
