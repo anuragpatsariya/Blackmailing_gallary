@@ -7,6 +7,17 @@ $(document).ready(function() {
         //$("#imgheading").val() = "";
         //$("#imgdetails").val() = "";
     });
+    
+    $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+        var input = $(this).parents('.input-group').find(':text'),
+            log = numFiles > 1 ? numFiles + ' files selected' : label;
+        if( input.length ) {
+            input.val(log);
+        } else {
+            if( log ) alert(log);
+        }
+    });
+    
     $.ajax({
         url: "http://localhost:3000/imagedata/?deleted=false",
         type: "GET",
@@ -24,6 +35,26 @@ $(document).ready(function() {
     });
     $("#grid_id").on("click", "li.grid_block div.container a.del_image span.glyphicon-remove", remove_block);
 });
+
+$(document).on('change', '.btn-file :file', function() {
+  var input = $(this),
+      numFiles = input.get(0).files ? input.get(0).files.length : 1,
+      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+  input.trigger('fileselect', [numFiles, label]);
+});
+
+$("input#confirm_newrpwd.form-control").on("keypress", function (event) {
+    if (event.keyCode === 13) {
+        register();
+    }
+});
+
+$("input#pwd.form-control").on("keypress", function (event) {
+    if (event.keyCode === 13) {
+        login();
+    }
+});
+
 
 var user_details;
 

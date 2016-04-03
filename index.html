@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" type="text/css" href="css/demo.css" />
     <link rel="stylesheet" type="text/css" href="css/component.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 
 </head>
@@ -19,7 +20,7 @@
 <body>
     <div class="container">
         <header class="clearfix">
-            <span>Blueprint <span class="bp-icon bp-icon-about" data-content="The Blueprints are a collection of basic and minimal website concepts, components, plugins and layouts with minimal style for easy adaption and usage, or simply for inspiration."></span></span>
+            <!--<span>Blueprint <span class="bp-icon bp-icon-about" data-content="The Blueprints are a collection of basic and minimal website concepts, components, plugins and layouts with minimal style for easy adaption and usage, or simply for inspiration."></span></span>-->
             <h1>Blackmailing Gallery</h1>
             <nav>
                 <button type="button" id="register" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalRegister">
@@ -54,7 +55,7 @@
     </div>
     <!--REGISTER A NEW USER-->
 
-    <div id="myModalRegister" class="modal fade" tabindex="-1" role="dialog">
+    <!--<div id="myModalRegister" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -82,11 +83,43 @@
                 </div>
             </div>
         </div>
+    </div>-->
+    
+    <div id="myModalRegister" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Register a New User</h4>
+                </div>
+                <div class="modal-body">
+                    <span>
+                        <input type="text" class="form-control" name="reg_uname" id="reg_uname" placeholder="Username" />
+                    </span>
+                    <span>
+                        <input type="password" class="form-control" name="newpwd" id="newpwd" placeholder="Password" />
+                    </span>
+                    <span>
+                        <input type="password" class="form-control" name="confirm_newrpwd" id="confirm_newrpwd" placeholder="Confirm Password" />
+                    </span>
+                    <input type="button" value="Register" class="btn btn-primary" name="Register" onclick="register()" id="register" />
+                </div>
+                <div class="modal-footer">
+                    <label id="regUserBlank" class="sr-only">Please enter a username.</label>
+                    <label id="regPwdBlank" class="sr-only">Please enter a valid password.</label>
+                    <label id="regSuccess" class="sr-only">You registered successfully.</label>
+                    <label id="regFailureUserExist" class="sr-only">User Already Exists.</label>
+                    <label id="regFailurePwd" class="sr-only">Both passowrds did not match.</label>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    
 
     <!--USER LOGIN-->
 
-    <div id="myModalLogin" class="modal fade" tabindex="-1" role="dialog">
+    <!--<div id="myModalLogin" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -104,11 +137,32 @@
                 </div>
             </div>
         </div>
+    </div>-->
+    
+    <div id="myModalLogin" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">User Login</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" name="uname" id="uname" placeholder="Username" />
+                    <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Password" />
+                    <input type="button" class="btn btn-primary" value="Login" name="login" onclick="login()" id="login" />
+                </div>
+                <div class="modal-footer">
+                    <label id="loginSuccess" class="sr-only">You logged in successfully.</label>
+                    <label id="loginFailure" class="sr-only">Incorrect username or password!! Try again.</label>
+                </div>
+            </div>
+        </div>
     </div>
+    
 
     <!--PHOTO UPLOAD-->
 
-    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+    <!--<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -120,6 +174,36 @@
                     <input type="text" name="imgheading" id="imgheading" placeholder="Heading" />
                     <input type="text" name="imgdetails" id="imgdetails" placeholder="Details" />
                     <input type="button" value="Upload Image" name="submit" onclick="uploadimg()" id="submit" />
+                    <label id="up" class="sr-only">File uploaded successfully.</label>
+                </div>
+                <div class="modal-footer">
+                    <label id="upr" class="sr-only">Record uploaded successfully.</label>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="uploadRecord()" id="uploadrecord">Upload Record</button>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Upload a new Photo</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="btn btn-primary btn-file">
+                                Choose File<input type="file" name="userphoto" id="imgfile" />
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" readonly>
+                    </div>            
+                    <input type="text" class="form-control" name="imgheading" id="imgheading" placeholder="Heading" />
+                    <input type="text" class="form-control" name="imgdetails" id="imgdetails" placeholder="Details" />
+                    <input type="button" class="btn btn-primary" value="Upload Image" name="submit" onclick="uploadimg()" id="submit" />
                     <label id="up" class="sr-only">File uploaded successfully.</label>
                 </div>
                 <div class="modal-footer">
