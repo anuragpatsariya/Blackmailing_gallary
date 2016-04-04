@@ -8,16 +8,16 @@ $(document).ready(function() {
         $("#upr").addClass("sr-only");
         //$("#imgheading").val() = "";
         //$("#imgdetails").val() = "";
-    });    
+    });
     $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
         var input = $(this).parents('.input-group').find(':text'),
             log = numFiles > 1 ? numFiles + ' files selected' : label;
-        if( input.length ) {
+        if (input.length) {
             input.val(log);
         } else {
-            if( log ) alert(log);
+            if (log) alert(log);
         }
-    });    
+    });
     $.ajax({
         url: "http://localhost:3000/imagedata/?deleted=false",
         type: "GET",
@@ -35,93 +35,85 @@ $(document).ready(function() {
     });
     $("#grid_id").on("click", "li.grid_block div.container a.del_image span.glyphicon-remove", remove_block);
 });
-
 $(document).on('change', '.btn-file :file', function() {
-  var input = $(this),
-      numFiles = input.get(0).files ? input.get(0).files.length : 1,
-      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-  input.trigger('fileselect', [numFiles, label]);
+    var input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    input.trigger('fileselect', [numFiles, label]);
 });
-
-$("input#confirm_newrpwd.form-control").on("keypress", function (event) {
+$("input#confirm_newrpwd.form-control").on("keypress", function(event) {
     if (event.keyCode === 13) {
         register();
     }
 });
-
-$("input#pwd.form-control").on("keypress", function (event) {
+$("input#pwd.form-control").on("keypress", function(event) {
     if (event.keyCode === 13) {
         login();
     }
 });
 
-
 var user_details;
-
 function register() {
     var new_username = $("#reg_uname").val();
     var newpwd = $("#newpwd").val();
     var confirm_newpwd = $("#confirm_newrpwd").val();
-    if(new_username.length === 0){
+    if (new_username.length === 0) {
         //window.alert("Username cannot be blank.");
         $("#regUserBlank").toggleClass("sr-only");
         //setTimeout(function() { $('#regUserBlank').modal('hide') }, 2000);
         setTimeout(function() { $("#regUserBlank").toggleClass("sr-only"); }, 1000);
-        
     }
-    else if(newpwd.length === 0){
+    else if (newpwd.length === 0) {
         //window.alert("Password field cannot be blank.");
         $("#regPwdBlank").toggleClass("sr-only");
         setTimeout(function() { $("#regPwdBlank").toggleClass("sr-only"); }, 1000);
     }
-    
-    else{
-    $.ajax({
-        type: "GET",
-        dataType: "JSON",
-        url: "http://localhost:3000/userdata/?username=" + new_username,
-        success: function(data) {
-            if (data.length !== 0) {
-                //window.alert("User Exists.");
-                $("#regFailureUserExist").toggleClass("sr-only");
-            } else {
-                //window.alert("User don't exist.");
-                if (newpwd != confirm_newpwd) {
-                    //window.alert("Passwords did not match.");
-                    $("#regFailurePwd").toggleClass("sr-only");
-                    setTimeout(function() { $("#regFailurePwd").toggleClass("sr-only"); }, 1000);
+
+    else {
+        $.ajax({
+            type: "GET",
+            dataType: "JSON",
+            url: "http://localhost:3000/userdata/?username=" + new_username,
+            success: function(data) {
+                if (data.length !== 0) {
+                    //window.alert("User Exists.");
+                    $("#regFailureUserExist").toggleClass("sr-only");
+                } else {
+                    //window.alert("User don't exist.");
+                    if (newpwd != confirm_newpwd) {
+                        //window.alert("Passwords did not match.");
+                        $("#regFailurePwd").toggleClass("sr-only");
+                        setTimeout(function() { $("#regFailurePwd").toggleClass("sr-only"); }, 1000);
+                    }
+                    else {
+                        $.ajax({
+                            type: "POST",
+                            dataType: "JSON",
+                            url: "http://localhost:3000/userdata/",
+                            data: { "username": new_username, "pwd": newpwd },
+                            success: function(data) {
+                                //window.alert("User registered successfully");
+                                $("#regSuccess").toggleClass("sr-only");
+                                setTimeout(function() { $('#myModalRegister').modal('hide'); }, 2000);
+                                $("#reg_uname")[0].value = "";
+                                $("#newpwd")[0].value = "";
+                                $("#confirm_newrpwd")[0].value = "";
+                                setTimeout(function() { $("#regSuccess").toggleClass("sr-only"); }, 1500);
+                            },
+                            Error: function(xhr, status, error) {
+                                window.alert("Error: " + xhr.status + status + error);
+                                window.alert("Registration failed.");
+                            }
+                        });
+                    }
                 }
-                else {
-                    $.ajax({
-                        type: "POST",
-                        dataType: "JSON",
-                        url: "http://localhost:3000/userdata/",
-                        data: { "username": new_username, "pwd": newpwd },
-                        success: function(data) {
-                            //window.alert("User registered successfully");
-                            $("#regSuccess").toggleClass("sr-only");
-                            setTimeout(function() { $('#myModalRegister').modal('hide'); }, 2000);
-                            $("#reg_uname")[0].value = "";
-                            $("#newpwd")[0].value = "";
-                            $("#confirm_newrpwd")[0].value = "";
-                            setTimeout(function() { $("#regSuccess").toggleClass("sr-only"); }, 1500);
-                        },
-                        Error: function(xhr, status, error) {
-                            window.alert("Error: " + xhr.status + status + error);
-                            window.alert("Registration failed.");
-                        }
-                    });
-                }
+            },
+            Error: function(xhr, status, error) {
+                window.alert("Error: " + xhr.status + status + error);
             }
-        },
-        Error: function(xhr, status, error) {
-            window.alert("Error: " + xhr.status + status + error);
-        }
-    });
+        });
     }
 }
-
-
 
 function remove_block() {
     //$(this).parent().parent().parent(".grid_block").remove();
@@ -147,7 +139,7 @@ function remove_block() {
 
 function loginSuccess() {
     var user_name = user_details.username;
-    BootstrapDialog.alert('Welcome Back!! '+ user_name);
+    BootstrapDialog.alert('Welcome Back!! ' + user_name);
     $("#loginSuccess").toggleClass("sr-only");
     $("#myInput").removeClass("sr-only");
     $("#myLogout").removeClass("sr-only");
@@ -247,36 +239,36 @@ function uploadimg() {
     var data = new FormData();
     //console.log(data.dataType);
     //console.log(data.type);
-    if($("#imgfile")[0].files === null){
+    if ($("#imgfile")[0].files === null) {
         window.alert("Choose an image first.");
-    }else {
-    $.each($('#imgfile')[0].files, function(i, file) {
+    } else {
+        $.each($('#imgfile')[0].files, function(i, file) {
 
-        data.append("userphoto", file);
-    });
-    $.ajax({
-        url: 'api/photo',
-        //url: 'http://localhost:5000/img/large',
-        data: data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        type: 'POST',
-        success: function(data) {
-            //alert("Photo uploaded successfully.");
-            $("#up").removeClass("sr-only");
-            file_path_name = data;
-            console.log(file_path_name);
-            imgheading = $("#imgheading").val();
-            imgdetails = $("#imgdetails").val();
-            console.log(file_path_name, imgheading, imgdetails);
-        },
-        error: function(xhr, status, error) {
-            alert("Photo upload failed.");
-            window.alert("Error: " + xhr.status + status + error);
-        }
-    });
-}
+            data.append("userphoto", file);
+        });
+        $.ajax({
+            url: 'api/photo',
+            //url: 'http://localhost:5000/img/large',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(data) {
+                //alert("Photo uploaded successfully.");
+                $("#up").removeClass("sr-only");
+                file_path_name = data;
+                console.log(file_path_name);
+                imgheading = $("#imgheading").val();
+                imgdetails = $("#imgdetails").val();
+                console.log(file_path_name, imgheading, imgdetails);
+            },
+            error: function(xhr, status, error) {
+                alert("Photo upload failed.");
+                window.alert("Error: " + xhr.status + status + error);
+            }
+        });
+    }
 }
 function uploadRecord() {
     //$("#uploadrecord").disabled=true;
