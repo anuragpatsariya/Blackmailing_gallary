@@ -132,7 +132,8 @@ function remove_block() {
         url: "http://localhost:3000/imagedata/" + record_id,
         data: { "deleted": true },
         success: function(data) {
-            window.alert("record deleted.");
+            //window.alert("record deleted.");
+            BootstrapDialog.alert("Record deleted successfully.");
         },
         Error: function(xhr, status, error) {
             window.alert("Error: " + xhr.status + status + error);
