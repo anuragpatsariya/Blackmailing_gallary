@@ -1,4 +1,5 @@
-/* globals $ */
+/* globals $, BootstrapDialog, CBPGridGallery */
+/* global unused: false */
 "use strict";
 $(document).ready(function() {
     //$('#myModal').modal();
