@@ -2,8 +2,8 @@
 /* global unused: false */
 "use strict";
 $(document).ready(function() {
-    //$('#myModal').modal();
-    $('#myModal').on('shown.bs.modal', function() {
+    //$('#myModalUpload').modal();
+    $('#myModalUpload').on('shown.bs.modal', function() {
         $('#myInput').focus();
         $("#submit")[0].disabled = false;
         $("#upr").addClass("sr-only");
