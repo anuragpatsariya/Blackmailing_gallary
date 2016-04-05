@@ -10,6 +10,7 @@ $(document).ready(function() {
         //$("#imgheading").val() = "";
         //$("#imgdetails").val() = "";
     });
+
     $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
         var input = $(this).parents('.input-group').find(':text'),
             log = numFiles > 1 ? numFiles + ' files selected' : label;
@@ -19,6 +20,7 @@ $(document).ready(function() {
             if (log) alert(log);
         }
     });
+
     $.ajax({
         url: "http://localhost:3000/imagedata/?deleted=false",
         type: "GET",
@@ -34,19 +36,23 @@ $(document).ready(function() {
             window.alert("Error: " + xhr.status + status + error);
         }
     });
+
     $("#grid_id").on("click", "li.grid_block div.container a.del_image span.glyphicon-remove", remove_block);
 });
+
 $(document).on('change', '.btn-file :file', function() {
     var input = $(this),
         numFiles = input.get(0).files ? input.get(0).files.length : 1,
         label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
     input.trigger('fileselect', [numFiles, label]);
 });
+
 $("input#confirm_newrpwd.form-control").on("keypress", function(event) {
     if (event.keyCode === 13) {
         register();
     }
 });
+
 $("input#pwd.form-control").on("keypress", function(event) {
     if (event.keyCode === 13) {
         login();
@@ -54,6 +60,7 @@ $("input#pwd.form-control").on("keypress", function(event) {
 });
 
 var user_details;
+//function to register a user
 function register() {
     var new_username = $("#reg_uname").val();
     var newpwd = $("#newpwd").val();
@@ -61,7 +68,6 @@ function register() {
     if (new_username.length === 0) {
         //window.alert("Username cannot be blank.");
         $("#regUserBlank").toggleClass("sr-only");
-        //setTimeout(function() { $('#regUserBlank').modal('hide') }, 2000);
         setTimeout(function() { $("#regUserBlank").toggleClass("sr-only"); }, 1000);
     }
     else if (newpwd.length === 0) {
@@ -116,8 +122,8 @@ function register() {
     }
 }
 
+//function to remove/delete a record
 function remove_block() {
-    //$(this).parent().parent().parent(".grid_block").remove();
     var record_id = $(this).parent().parent().parent(".grid_block")[0].dataset.id;
     $.ajax({
         type: "PATCH",
@@ -136,16 +142,15 @@ function remove_block() {
     $(this).parent().parent().parent(".grid_block").remove();
 }
 
-
-
+//function get executed when a user successfully logged in 
 function loginSuccess() {
     var user_name = user_details.username;
     BootstrapDialog.alert('Welcome Back!! ' + user_name);
     $("#loginSuccess").toggleClass("sr-only");
     $("#myInput").removeClass("sr-only");
     $("#myLogout").removeClass("sr-only");
-    $("#login").addClass("sr-only");
-    $("#register").addClass("sr-only");
+    $("#button_login").addClass("sr-only");
+    $("#button_register").addClass("sr-only");
     $("#uname")[0].value = "";
     $("#pwd")[0].value = "";
     setTimeout(function() { $('#myModalLogin').modal('hide'); }, 2000);
@@ -156,8 +161,6 @@ function loginSuccess() {
         success: function(data) {
             $("#grid_id")[0].innerHTML = "";
             $.each(data, function(i, item) {
-                //alert(item);
-
                 var v = "<li data-id=\"" + item.id + "\" class=\"grid_block\"><figure> <img src=\"" + item.img_path + "\" alt=\"img0" + item.id + "\" height=\"150\" width=\"50\"/><figcaption> <h3>" + item.img_heading + "</h3><p>" + item.img_details + "</p></figcaption> </figure><div class=\"container\"><a class = \"del_image\"><span class=\"glyphicon glyphicon-remove\"></span></a></div></li>";
                 $("#grid_id")[0].innerHTML += v;
             });
@@ -168,6 +171,7 @@ function loginSuccess() {
     });
 }
 
+//Function get executed in case of login failure
 function loginFailure() {
     $("#loginFailure").removeClass("sr-only");
     setTimeout(function() { $("#loginFailure").toggleClass("sr-only"); }, 1000);
@@ -177,22 +181,20 @@ function loginFailure() {
     setTimeout(function() { $('#myModalLogin').modal('hide'); }, 2000);
 }
 
+//function for login
 function login() {
     var uname = $("#uname").val();
     var pwd = $("#pwd").val();
-
     $.ajax({
         url: "http://localhost:3000/userdata/?username=" + uname + "&pwd=" + pwd,
         type: "GET",
         dataType: "json",
         success: function(data) {
-
             if (data.length === 1) {
                 console.log("Successful login.");
                 user_details = data[0];
                 loginSuccess();
-            }
-            else {
+            } else {
                 console.log("Login unsuccessful.");
                 loginFailure();
             }
@@ -204,11 +206,12 @@ function login() {
     });
 }
 
+//function for logout
 function logout() {
     user_details = null;
     $("#loginSuccess").toggleClass("sr-only");
-    $("#login").removeClass("sr-only");
-    $("#register").removeClass("sr-only");
+    $("#button_login").removeClass("sr-only");
+    $("#button_register").removeClass("sr-only");
     $("#myInput").addClass("sr-only");
     $("#myLogout").addClass("sr-only");
     $("#grid_id")[0].innerHTML = "";
@@ -230,11 +233,11 @@ function logout() {
 
 }
 
-
-
 var file_path_name;
 var imgheading;
 var imgdetails;
+
+//Function to upload an image
 function uploadimg() {
     $("#submit")[0].disabled = true;
     var data = new FormData();
@@ -244,7 +247,6 @@ function uploadimg() {
         window.alert("Choose an image first.");
     } else {
         $.each($('#imgfile')[0].files, function(i, file) {
-
             data.append("userphoto", file);
         });
         $.ajax({
@@ -271,8 +273,8 @@ function uploadimg() {
         });
     }
 }
+//function to upload a record
 function uploadRecord() {
-    //$("#uploadrecord").disabled=true;
     console.log(file_path_name, imgheading, imgdetails);
     $.ajax({
         url: "http://localhost:3000/imagedata",
