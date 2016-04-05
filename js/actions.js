@@ -7,8 +7,6 @@ $(document).ready(function() {
         $('#myInput').focus();
         $("#submit")[0].disabled = false;
         $("#upr").addClass("sr-only");
-        //$("#imgheading").val() = "";
-        //$("#imgdetails").val() = "";
     });
 
     $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
